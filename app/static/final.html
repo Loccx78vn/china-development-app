@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economic Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <h2>Economic Dashboard 2025</h2>
+        <div class="tabs">
+            <!-- Main Tab Buttons -->
+            <button class="tab" id="overviewTab">Overview</button>
+            <button class="tab" id="mapTab">Map</button>
+            <button class="tab" id="stockTab">Stock</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Left Sidebar: Custom content area -->
+        <div class="sidebar-left">
+            <div class="sidebar-content">
+                <p>Additional content here.</p>
+            </div>
+        </div>
+
+        <!-- Content Area (chart, map) -->
+        <div class="content-area">
+            <div class="sub-header">
+                <div class="sub-tabs-and-filters">
+                    <!-- Sub-tabs on the left side -->
+                    <div class="sub-tabs" id="subTabsContainer">
+                        <!-- Sub-tabs will be dynamically added when Map tab is active -->
+                        <button class="sub-tab" id="staticTab">Static</button>
+                        <button class="sub-tab" id="interactiveTab">Interactive</button>
+                    </div>
+                    <div class="filters">
+                        <!-- Year Filter in Map Tab -->
+                        <div id="yearFilterPlaceholder" class="tab-filter">
+                            <div class="form-group shiny-input-container">
+                                <label class="control-label" id="year-label" for="year">Select Year</label>
+                                <div>
+                                    <select id="year" class="shiny-input-select">
+                                        <option value="2000" selected>2000</option>
+                                        <option value="2010">2010</option>
+                                        <option value="2015">2015</option>
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                    </select>
+                                    <script type="application/json" data-for="year" data-nonempty="">
+                                        {"plugins":["selectize-plugin-a11y"]}
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Company Filter in Stock Tab -->
+                        <div id="companyFilterPlaceholder" class="tab-filter">
+                            <div class="form-group shiny-input-container">
+                                <label class="control-label" id="company-label" for="company">Select a Shipping Company:</label>
+                                <div>
+                                    <select id="company" class="shiny-input-select">
+                                        <option value="All" selected>All</option>
+                                        <option value="Maersk Line">Maersk Line</option>
+                                        <option value="China COSCO Shipping Corporation">China COSCO Shipping Corporation</option>
+                                        <option value="Hapag-Lloyd">Hapag-Lloyd</option>
+                                        <option value="Evergreen Marine">Evergreen Marine</option>
+                                        <option value="Yang Ming Marine Transport">Yang Ming Marine Transport</option>
+                                        <option value="Hyundai Merchant Marine">Hyundai Merchant Marine</option>
+                                        <option value="ZIM Integrated Shipping Services">ZIM Integrated Shipping Services</option>
+                                    </select>
+                                    <script type="application/json" data-for="company" data-nonempty="">
+                                        {"plugins":["selectize-plugin-a11y"]}
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="Overview" class="tab-content">
+                <div class="chart-header">Overview</div>
+                <div class="card-body">
+                    <div class="chart-line-container">
+                        <div class="plotly html-widget html-widget-output shiny-report-size shiny-report-theme html-fill-item" id="line-line" style="width:100%;height:400px;"></div>
+                    </div>
+                    <hr/>
+                    <div class="chart-statistical_chart-container">
+                        <div class="shiny-plot-output html-fill-item" id="line-statistical_chart" style="width:100%;height:400px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Tab -->
+            <div id="Map" class="tab-content">
+                <!-- Sub-tab content for Static and Interactive maps -->
+                <div id="Static" class="sub-tab-content">
+                    <div class="chart-header">Static Map</div>
+                    <div class="card-body">
+                        <div class="chart-map-container">
+                            <div class="shiny-plot-output html-fill-item" id="map-map" style="width:100%;height:400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="Interactive" class="sub-tab-content">
+                    <div class="chart-header">Interactive Map</div>
+                    <div class="card-body">
+                        <div class="chart-onl_map-container">
+                            <div class="leaflet html-widget html-widget-output shiny-report-size html-fill-item" id="onl_map-onl_map" style="width:100%;height:400px;"></div>
+                        </div>
+                        <div style="display: none;">
+                            <button id="onl_map-toggle_chart" type="button" class="btn btn-default action-button">Toggle Chart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stock Tab -->
+            <div id="Stock" class="tab-content">
+                <div class="chart-header">Stock</div>
+                <div class="card-body">
+                    <div class="chart-stock-container">
+                        <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="stock-stock" style="width:100%;height:400px;"></div>
+                    </div>
+                </div>
+                <button id="showTableBtn" onclick="toggleTable()">Show Table</button>
+                <div id="tablePlaceholder">
+                    <div id="overlay" onclick="closeTable()"></div>
+                    <div id="tableContainer">
+                        <div class="card bslib-card bslib-mb-spacing html-fill-item html-fill-container" data-bslib-card-init data-require-bs-caller="card()" data-require-bs-version="5">
+                            <div class="card-header">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h4 style="margin: 0;">
+                                        <span>
+                                            <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#41b6c4;overflow:visible;position:relative;">
+                                                <path d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z"/>
+                                            </svg>
+                                            Financial Exchange Stock Data
+                                        </span>
+                                    </h4>
+                                    <a id="table-download_data" class="btn btn-default shiny-download-link disabled" href="" target="_blank" download aria-disabled="true" tabindex="-1" style="margin: 0;">
+                                        <i class="fas fa-download" role="presentation" aria-label="download icon"></i>
+                                        <span>
+                                            <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;">
+                                                <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
+                                            </svg>
+                                            Download Data
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body bslib-gap-spacing html-fill-item html-fill-container" style="margin-top:auto;margin-bottom:auto;flex:1 1 auto;">
+                                <div style="padding: 0;">
+                                    <div class="card bslib-card bslib-mb-spacing html-fill-item html-fill-container" data-bslib-card-init data-require-bs-caller="card()" data-require-bs-version="5" style="margin-bottom: 10px;">
+                                        <div class="card-header" style="padding: 8px 15px;">
+                                            <span>
+                                                <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#7fcdbb;overflow:visible;position:relative;">
+                                                    <path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64H348.7c2.2 20.4 3.3 41.8 3.3 64zm28.8-64H503.9c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32H376.7c-10-63.9-29.8-117.4-55.7-153.1C355.2 55.9 419.5 58 460.7 98c46.9 46.9 55.9 118.4 31.9 179.6z"/>
+                                                </svg>
+                                                Table Data Display
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Stock Tab -->
+            </div>
+        <div class="footer">
+        <div class="footer-icons">
+            <a href="https://github.com" target="_blank">🔗 GitHub</a>
+            <a href="https://facebook.com" target="_blank">🔗 Facebook</a>
+        </div>
+        <div class="footer-text">
+            &copy; Created by Loccx78. All rights reserved.
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>

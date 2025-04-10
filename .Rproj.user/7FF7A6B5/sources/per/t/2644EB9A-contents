@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economic Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h2>Economic Dashboard 2025</h2>
+        <div class="tabs">
+            <!-- Main Tab Buttons -->
+            <button class="tab" id="overviewTab">Overview</button>
+            <button class="tab" id="mapTab">Map</button>
+            <button class="tab" id="stockTab">Stock</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Left Sidebar: Custom content area -->
+        <div class="sidebar-left">
+            <div class="sidebar-content">
+                <p>Additional content here.</p>
+            </div>
+        </div>
+
+        <!-- Content Area (chart, map) -->
+        <div class="content-area">
+            <div class="sub-header">
+                <div class="sub-tabs-and-filters">
+                    <!-- Sub-tabs on the left side -->
+                    <div class="sub-tabs" id="subTabsContainer">
+                        <!-- Sub-tabs will be dynamically added when Map tab is active -->
+                        <button class="sub-tab" id="staticTab">Static</button>
+                        <button class="sub-tab" id="interactiveTab">Interactive</button>
+                    </div>
+                    <div class="filters">
+                        <!-- Placeholder for Year Filter in Map Tab -->
+                        <div id="yearFilterPlaceholder" class="tab-filter">
+                            {{ selectYear_ui }}
+                        </div>
+                        
+                        <!-- Placeholder for Company Filter in Stock Tab -->
+                        <div id="companyFilterPlaceholder" class="tab-filter">
+                            {{ selectCompany_ui }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="Overview" class="tab-content">
+                    <div class="chart-header">Overview</div>
+                    <div class="card-body">
+                        {{ line_ui }}
+                    </div>
+            </div>
+
+            <!-- Map Tab -->
+            <div id="Map" class="tab-content">
+                <!-- Sub-tab content for Static and Interactive maps -->
+                <div id="Static" class="sub-tab-content">
+                        <div class="chart-header">Static Map</div>
+                        <div class="card-body">
+                            {{ staticmap_ui }}
+                        </div>
+                </div>
+                <div id="Interactive" class="sub-tab-content">
+                        <div class="chart-header">Interactive Map</div>
+                        <div class="card-body">
+                            {{ interactive_ui }}
+                        </div>
+                </div>
+            </div>
+
+            <!-- Stock Tab -->
+            <div id="Stock" class="tab-content">
+                    <div class="chart-header">Stock</div>
+                    <div class="card-body">
+                        {{ stock_ui }}
+                </div>
+                <button id="showTableBtn" onclick="toggleTable()">Show Table</button>
+                <div id="tablePlaceholder">
+                    <div id="overlay" onclick="closeTable()"></div>
+                    <div id="tableContainer">
+                        {{ datastock_ui }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-icons">
+            <a href="https://github.com" target="_blank">🔗 GitHub</a>
+            <a href="https://facebook.com" target="_blank">🔗 Facebook</a>
+        </div>
+        <div class="footer-text">
+            &copy; Created by Loccx78. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
