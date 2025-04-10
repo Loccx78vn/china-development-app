@@ -20,7 +20,7 @@ ui <- function(id) {
   ns <- NS(id)
   # Html template used to render UI
   htmlTemplate(
-    "app/static/test2.html",
+    "app/static/index.html",
     
     # Connect the UI placeholders to module UIs or input widgets
     selectYear_ui = selectInput(ns("year"), 

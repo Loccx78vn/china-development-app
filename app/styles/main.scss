@@ -102,12 +102,14 @@ header, footer {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;  /* Align items at the top */
 }
 
 .card-body {
-    height: auto;
+    display: flex; 
+    flex-direction: column; /* Stack content vertically */
     overflow: auto;
+    position: relative;
 }
 
 .sub-header {
@@ -148,12 +150,6 @@ header, footer {
 #map, .chart-container {
     height: 100%;
     width: 100%;
-}
-
-.card-body {
-    height: 400px;
-    overflow: auto;
-    position: relative;
 }
 
 canvas {
@@ -235,30 +231,12 @@ canvas {
 }
 
 .sub-tab-content {
-    visibility: hidden;
-    position: absolute;
-    left: -9999px;
+    display: none;
 }
-
-.sub-tab-content.active {
-    visibility: visible;
-    position: static;
-    left: auto;
-}
-fu
 
 .tab-content {
-    visibility: hidden;
-    position: absolute;
-    left: -9999px;
+    display: none;
 }
-
-.tab-content.active {
-    visibility: visible;
-    position: static;
-    left: auto;
-}
-
 
 .card {
     border: 1px solid #ddd;
@@ -285,10 +263,10 @@ fu
     padding: 10px 20px;
     border: 1px solid transparent;
     cursor: pointer;
-    margin: 20px 0;
     border-radius: 4px;
     font-size: 16px;
     transition: color 0.3s ease, border-color 0.3s ease;
+    margin-top: auto; /* Pushes the button to the bottom of its container */
 }
 
 #showTableBtn:hover {
@@ -347,4 +325,4 @@ fu
   display: flex; /* Flexbox to help with responsiveness */
   justify-content: center;
   align-items: center;
-}  
+}

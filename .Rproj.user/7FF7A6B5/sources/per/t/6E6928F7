@@ -1,9 +1,9 @@
 {
     "id": "6E6928F7",
-    "path": "~/Xuân Lộc/R/Project R/china-vs-usa/app/main.R",
+    "path": "~/GitHub/china-development-app/app/main.R",
     "project_path": "app/main.R",
     "type": "r_source",
-    "hash": "3867629940",
+    "hash": "2493243578",
     "contents": "",
     "dirty": false,
     "created": 1744287315120.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Sourceftdp0m82yiap",
-        "cursorPosition": "27,18",
+        "cursorPosition": "22,28",
         "scrollLine": "14"
     },
     "folds": "",
-    "lastKnownWriteTime": 1744287356,
+    "lastKnownWriteTime": 1744289379,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1744287356136,
+    "last_content_update": 1744289379940,
     "read_only": false,
     "read_only_alternatives": []
 }
