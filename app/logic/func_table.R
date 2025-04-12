@@ -188,21 +188,27 @@ render_stock_table <- function(data) {
     '<i class="fas fa-percentage"></i> Exchange Rate %'
   )
   
-  # Define conditional formatting for financial data
-  DT::datatable(
+  # Create the datatable
+  dt <- DT::datatable(
     data |> 
-      dplyr::select(flag_icon,company_display,symbol_display,date,open,high,low,close,change_pct,volume,adjusted,exchange_rate,exchange_rate_pct), 
+      dplyr::select(flag_icon, company_display, symbol_display, date, open, high, low, close, 
+                    change_pct, volume, adjusted, exchange_rate, exchange_rate_pct), 
     colnames = custom_names,
     options = list(
       pageLength = 15,
       scrollX = TRUE,
       autoWidth = TRUE,
-      order = list(list(2, 'desc')),  # Sort by date by default (descending)
+      order = list(list(3, 'desc')),  # Sort by date column (index 3)
       columnDefs = list(
-        list(targets = c(0, 1), className = "dt-left", orderable = TRUE),  # Company and symbol columns
+        list(targets = c(0, 1), className = "dt-left", orderable = TRUE),
         list(targets = "_all", className = "dt-center"),
         list(targets = price_cols, 
-             render = DT::JS("function(data, type) { if(type === 'display') return '<span class=\"fa fa-dollar-sign\" style=\"color:#41b6c4\"></span> ' + data.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); return data; }"))
+             render = DT::JS("function(data, type) { 
+               if(type === 'display') 
+                 return '<span class=\"fa fa-dollar-sign\" style=\"color:#41b6c4\"></span> ' + 
+                        data.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
+               return data; 
+             }"))
       ),
       initComplete = DT::JS("
         function(settings, json) {
@@ -212,46 +218,45 @@ render_stock_table <- function(data) {
       ")
     ),
     rownames = FALSE,
-    escape = FALSE,  # Allow HTML for the icons and bold text
-    # Apply special formatting to the change columns
-    callback = DT::JS("
-      table.on('draw.dt', function() {
-        var api = this.api();
-        var changeCol = api.column('Change:name').index();
-        var changePctCol = api.column('Change %:name').index();
-        
-        if(changeCol !== undefined) {
-          api.cells(null, changeCol).nodes().each(function(cell, i) {
-            var value = api.cell(i, changeCol).data();
-            if(value > 0) {
-              $(cell).css('color', '#41b6c4').html('<i class=\"fas fa-caret-up\"></i> ' + value.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-            } else if(value < 0) {
-              $(cell).css('color', '#225ea8').html('<i class=\"fas fa-caret-down\"></i> ' + value.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-            } else {
-              $(cell).html(value.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-            }
-          });
-        }          
-        if(changePctCol !== undefined) {
-          api.cells(null, changePctCol).nodes().each(function(cell, i) {
-            var value = api.cell(i, changePctCol).data();
-            if(value > 0) {
-              $(cell).css('color', '#41b6c4').html('<i class=\"fas fa-arrow-up\"></i> +' + value.toFixed(2) + '%');
-            } else if(value < 0) {
-              $(cell).css('color', '#225ea8').html('<i class=\"fas fa-arrow-down\"></i> ' + value.toFixed(2) + '%');
-            } else {
-              $(cell).html('0.00%');
-            }
-          });
+    escape = FALSE  # Allow HTML for the icons and formatting
+  )
+  
+  # Apply custom formatting for change percentage column
+  dt <- DT::formatStyle(
+    dt,
+    "change_pct",
+    target = "cell",
+    valueColumns = "change_pct",
+    render = DT::JS("
+      function(data, type, row, meta) {
+        if (type === 'display') {
+          if (data > 0) {
+            return '<span style=\"color:#41b6c4\"><i class=\"fas fa-arrow-up\"></i> +' + data.toFixed(2) + '%</span>';
+          } else if (data < 0) {
+            return '<span style=\"color:#225ea8\"><i class=\"fas fa-arrow-down\"></i> ' + data.toFixed(2) + '%</span>';
+          } else {
+            return '0.00%';
+          }
         }
-        
-        var exchangeRateCol = api.column('Exchange Rate %:name').index();
-        if(exchangeRateCol !== undefined) {
-          api.cells(null, exchangeRateCol).nodes().each(function(cell, i) {
-            $(cell).html('<i class=\"fas fa-percentage\" style=\"color:#7fcdbb\"></i> ' + $(cell).text());
-          });
-        }
-      });
+        return data;
+      }
     ")
   )
+  
+  # Apply custom formatting for exchange rate percentage column
+  dt <- DT::formatStyle(
+    dt,
+    "exchange_rate_pct",
+    target = "cell",
+    render = DT::JS("
+      function(data, type, row, meta) {
+        if (type === 'display') {
+          return '<i class=\"fas fa-percentage\" style=\"color:#7fcdbb\"></i> ' + data.toFixed(2) + '%';
+        }
+        return data;
+      }
+    ")
+  )
+  
+  return(dt)
 }
