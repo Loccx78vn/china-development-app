@@ -227,10 +227,33 @@ ui <- function(id) {
         title = span(icon("home"), " Overview"),
         value = "overview",
         layout_sidebar(
-          sidebar = tags$div(
-            class = "left-sidebar",
-            h4(icon("compass"), " Navigation"),
-            p("Use the tabs above to explore different views of economic data.")
+          sidebar = tagList(
+            h5(icon("info-circle"), " Summary"),
+            p(
+              style = "font-size: 0.9em;", 
+              "There are two charts: a ", 
+              tags$strong("bar + line chart"), 
+              " and a ", 
+              tags$strong("boxplot"), 
+              ". The line chart includes a small line chart that shows the ", 
+              tags$strong("percentage of public consumption in China/GDP each year"), 
+              ". The bar chart displays the ", 
+              tags$strong("GDP each year"), 
+              ", with the line representing the ", 
+              tags$strong("total amount of public consumption in actual figures"), 
+              ". Below is a ", 
+              tags$strong("boxplot of 31 provinces in China from 2000 to 2023"), 
+              "."
+            ),
+            h6(icon("question-circle"), "Some details"),
+            tags$ul(
+              style = "font-size: 0.9em;",
+              tags$li(HTML("<b>China's government spending</b> as a percentage of GDP fluctuated, but <span style='color:#007BFF'><b>actual spending consistently increased</b></span>.")),
+              tags$li(HTML("This <b>steady rise</b> in expenditure contrasts with more volatile factors like <span style='color:#28A745'><b>FDI</b></span>.")),
+              tags$li(HTML("A major turning point came in <span style='color:#FFC107'><b>2000</b></span> with the launch of the <b>10th Five-Year Plan</b>.")),
+              tags$li(HTML("From <b>2000 to 2010</b>, China's GDP <span style='color:#DC3545'><b>nearly tripled</b></span>.")),
+              tags$li(HTML("<b>Sustained government investment</b> was a key driver of <span style='color:#17A2B8'><b>strong economic growth</b></span> during this period."))
+            )
           ),
           card(
             full_screen = TRUE,
@@ -355,9 +378,8 @@ ui <- function(id) {
         class = "footer-content",
         div(
           class = "social-links",
-          a(href = "#", icon("twitter"), " Twitter"),
-          a(href = "#", icon("linkedin"), " LinkedIn"),
-          a(href = "#", icon("github"), " GitHub")
+          a(href = "https://www.facebook.com/cao.loc.9693", icon("facebook"), " Facebook"),
+          a(href = "https://github.com/Loccx78vn", icon("github"), " GitHub")
         ),
         div(
           class = "footer-credit",
