@@ -3,8 +3,7 @@ box::use(
   bslib[card, page_navbar, nav_panel, nav_menu, nav_spacer, nav_item, layout_sidebar, navset_card_tab],
   fontawesome[fa],
   dplyr[...],
-  shinyjs,
-  shinycssloaders[withSpinner]
+  shinyjs[...]
 )
 
 box::use(
@@ -27,7 +26,7 @@ ui <- function(id) {
                      "#1D91C0", "#225EA8", "#253494", "#081D58")
   
   fluidPage(
-    shinyjs$useShinyjs(),
+    useShinyjs(),
     # Head section
     tags$head(
       # Font Awesome for icons
